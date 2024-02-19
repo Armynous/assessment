@@ -3,14 +3,21 @@ package com.kbtg.bootcamp.posttest.user;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "user", schema = "public")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private Integer id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
+
+    public User() {
+
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -20,7 +27,7 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -32,7 +39,7 @@ public class User {
         return password;
     }
 
-    public User(int id, String username, String password) {
+    public User(Integer id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;

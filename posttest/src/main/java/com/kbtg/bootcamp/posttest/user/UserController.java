@@ -1,26 +1,36 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.AllLotteryResponse;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketResponseId;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketService;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketSummaryResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/lotteries")
+@RequestMapping("/users")
 public class UserController {
-    private final LotteryService lotteryService;
 
-    public UserController(LotteryService lotteryService) {
-        this.lotteryService = lotteryService;
+    private final UserTicketService userTicketService;
+
+    public UserController(UserTicketService userTicketService) {
+        this.userTicketService = userTicketService;
     }
 
-    @GetMapping("")
-    public AllLotteryResponse lotteryList() {
-        return lotteryService.findAllLottery();
+    @PostMapping("/{userId}/lotteries/{ticketId}")
+    public UserTicketResponseId createLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
+        return userTicketService.createLottery(userId, ticketId);
     }
 
-    @PostMapping("/users/:userId/lotteries/:ticketId")
-    public ResponseEntity<?> createLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
-        return lotteryService.createLottery(userId, ticketId);
+    @GetMapping("/{userId}/lotteries")
+    public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(@PathVariable Integer userId) {
+        return userTicketService.getLotterySummary(userId);
+    }
+
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
+    public String dropLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
+        return userTicketService.dropLottery(userId, ticketId);
     }
 }

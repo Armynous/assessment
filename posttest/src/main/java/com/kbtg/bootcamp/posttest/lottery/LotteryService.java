@@ -1,12 +1,18 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.kbtg.bootcamp.posttest.user.User;
+import com.kbtg.bootcamp.posttest.user.UserRepository;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LotteryService {
@@ -40,12 +46,5 @@ public class LotteryService {
         lotteryRepository.save(newLottery);
 
         return new LotteryResponse(newLottery.getTicket());
-    }
-
-    public ResponseEntity<?> createLottery(Integer userId, Integer ticketId) {
-        Lottery newLottery = new Lottery();
-        Lottery savedLottery = lotteryRepository.save(newLottery);
-
-        return new ResponseEntity<>(savedLottery, HttpStatus.CREATED);
     }
 }

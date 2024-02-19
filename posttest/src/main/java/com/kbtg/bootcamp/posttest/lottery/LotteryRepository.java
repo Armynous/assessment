@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface LotteryRepository extends JpaRepository<Lottery, String> {
     boolean existsByTicket(String ticket);
+
+    Optional<Lottery> findById(Integer ticketId);
 }

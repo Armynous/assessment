@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.admin;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "admin")
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "lottery")
 public class Lottery {
 
     @Id
@@ -17,6 +18,7 @@ public class Lottery {
     private String ticket;
     @Column(name = "price")
     private int price;
+    @Column(name = "amount")
     private int amount = 1;
     public Lottery() {}
 
