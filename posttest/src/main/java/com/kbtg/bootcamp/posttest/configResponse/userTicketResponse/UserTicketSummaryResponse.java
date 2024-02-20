@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.userTicket;
+package com.kbtg.bootcamp.posttest.configResponse.userTicketResponse;
 
 import java.util.List;
 

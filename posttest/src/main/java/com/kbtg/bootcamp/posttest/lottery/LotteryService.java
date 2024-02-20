@@ -1,18 +1,12 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
-import com.kbtg.bootcamp.posttest.user.User;
-import com.kbtg.bootcamp.posttest.user.UserRepository;
-import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
-import com.kbtg.bootcamp.posttest.userTicket.UserTicketRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.AllLotteryResponse;
+import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.LotteryResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LotteryService {

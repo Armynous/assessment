@@ -18,7 +18,7 @@ public class UserTicket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "lottery_id")
     private Lottery lottery;
 

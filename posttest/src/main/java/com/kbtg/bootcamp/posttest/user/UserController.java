@@ -1,13 +1,11 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
-import com.kbtg.bootcamp.posttest.userTicket.UserTicketResponseId;
-import com.kbtg.bootcamp.posttest.userTicket.UserTicketService;
-import com.kbtg.bootcamp.posttest.userTicket.UserTicketSummaryResponse;
+import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketDropResponse;
+import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketResponseId;
+import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketSummaryResponse;
+import com.kbtg.bootcamp.posttest.userTicket.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -30,7 +28,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public String dropLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
+    public UserTicketDropResponse dropLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
         return userTicketService.dropLottery(userId, ticketId);
     }
 }

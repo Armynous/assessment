@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.userTicket;
+package com.kbtg.bootcamp.posttest.configResponse.userTicketResponse;
 
 public class UserTicketResponseId {
     private String id;
