@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.AllLotteryResponse;
 import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.LotteryResponse;
+import com.kbtg.bootcamp.posttest.exception.DuplicateException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +32,14 @@ public class LotteryService {
     @PreAuthorize("hasRole('ADMIN')")
     public LotteryResponse createLottery(LotteryRequest request) throws Exception {
         if (lotteryRepository.existsByTicket(request.getTicket())) {
-            throw new Exception("Lottery number already exists");
+            throw new DuplicateException("Lottery number already exists");
         }
 
         Lottery newLottery = new Lottery();
         newLottery.setTicket(request.getTicket());
         newLottery.setPrice(request.getPrice());
+        newLottery.setAmount(request.getAmount());
+
         lotteryRepository.save(newLottery);
 
         return new LotteryResponse(newLottery.getTicket());

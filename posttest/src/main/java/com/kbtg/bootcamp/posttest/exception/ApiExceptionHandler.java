@@ -18,6 +18,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {DuplicateException.class})
+    public ResponseEntity<Object> handleDuplicateException(DuplicateException duplicateException) {
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
+                duplicateException.getMessage(),
+                HttpStatus.CREATED
+        );
+
+        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.CREATED);
+    }
 }
 
 

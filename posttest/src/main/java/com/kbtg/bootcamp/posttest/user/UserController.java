@@ -18,17 +18,17 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public UserTicketResponseId createLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
-        return userTicketService.createLottery(userId, ticketId);
+    public UserTicketResponseId createLottery(@PathVariable String userId, @PathVariable Integer ticketId) {
+        return userTicketService.createLottery(userId, String.valueOf(ticketId));
     }
 
     @GetMapping("/{userId}/lotteries")
-    public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(@PathVariable Integer userId) {
+    public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(@PathVariable String userId) {
         return userTicketService.getLotterySummary(userId);
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public UserTicketDropResponse dropLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
+    public UserTicketDropResponse dropLottery(@PathVariable String userId, @PathVariable String ticketId) {
         return userTicketService.dropLottery(userId, ticketId);
     }
 }

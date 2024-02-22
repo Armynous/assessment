@@ -32,10 +32,10 @@ public class UserTicketService {
         this.userService = userService;
     }
 
-    public UserTicketResponseId createLottery(Integer userId, Integer ticketId) {
+    public UserTicketResponseId createLottery(String userId, String ticketId) {
 
         Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<Lottery> optionalTicket = lotteryRepository.findById(ticketId);
+        Optional<Lottery> optionalTicket = lotteryRepository.findByTicket(ticketId);
 
         if (optionalUser.isPresent() && optionalTicket.isPresent()) {
             User user = optionalUser.get();
@@ -52,7 +52,7 @@ public class UserTicketService {
 
     }
 
-    public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(Integer userId) {
+    public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(String userId) {
         List<UserTicket> userTickets = userService.getAllTicketByUser(userId);
 
         int totalCount = userTickets.size();
@@ -60,7 +60,7 @@ public class UserTicketService {
 
         List<String> uniqueTickets = userTickets.stream()
                 .map(ticket -> ticket.getLottery().getTicket())
-                .distinct()
+//                .distinct()
                 .toList();
 
         UserTicketSummaryResponse summaryResponse = new UserTicketSummaryResponse(uniqueTickets, totalCount, totalCost);
@@ -68,14 +68,14 @@ public class UserTicketService {
         return ResponseEntity.ok(summaryResponse);
     }
 
-    public UserTicketDropResponse dropLottery(Integer userId, Integer ticketId) {
+    public UserTicketDropResponse dropLottery(String userId, String ticketId) {
 
         Optional<UserTicket> deleteTicket = userTicketRepository.findAllById(userId, ticketId);
 
         userTicketRepository.dropLottery(userId, ticketId);
 
         return deleteTicket.map(userTicket -> new UserTicketDropResponse(userTicket.getLottery().getTicket()))
-                .orElse(null);
+                .orElse(new UserTicketDropResponse("error"));
 
     }
 }

@@ -12,16 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserTicketRepository extends JpaRepository<UserTicket, Integer> {
-    @Query("SELECT u FROM UserTicket u WHERE u.user.id = :userId")
-    List<UserTicket> findByUserId(Integer userId);
+public interface UserTicketRepository extends JpaRepository<UserTicket, String> {
+    @Query("SELECT ut FROM UserTicket ut WHERE ut.user.id = :userId")
+    List<UserTicket> findByUserId(String userId);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM UserTicket ut WHERE ut.user.id = :userId AND ut.lottery.id = :ticketId")
-    void dropLottery(@Param("userId") Integer userId, @Param("ticketId") Integer ticketId);
+    @Query("DELETE FROM UserTicket ut WHERE ut.user.id = :userId AND ut.lottery.ticket = :ticketId")
+    void dropLottery(@Param("userId") String userId, @Param("ticketId") String ticketId);
 
-    @Query("SELECT ut FROM UserTicket ut WHERE ut.user.id = :userId AND ut.lottery.id = :ticketId")
-    Optional<UserTicket> findAllById(@Param("userId") Integer userId, @Param("ticketId") Integer ticketId);
-
+    @Query("SELECT ut FROM UserTicket ut WHERE ut.user.id = :userId AND ut.lottery.ticket = :ticketId")
+    Optional<UserTicket> findAllById(@Param("userId") String userId, @Param("ticketId") String ticketId);
 }

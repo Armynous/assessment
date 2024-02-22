@@ -1,25 +1,25 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "lottery")
 public class Lottery {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lottery_id")
-    private Long id;
+    @Column(name = "ticket", nullable = false)
     @NotNull
-    @Digits(integer = 6, fraction = 0, message = "Lottery number must be 6 digits.")
-    @Column(name = "ticket")
+    @Size(min = 6, max = 6, message = "Ticket must be a 6-digit string")
     private String ticket;
+    @NotNull
     @Column(name = "price")
     private int price;
+    @NotNull
     @Column(name = "amount")
-    private int amount = 1;
+    private int amount;
     public Lottery() {}
 
     public int getPrice() {
@@ -34,15 +34,14 @@ public class Lottery {
         return amount;
     }
 
-    public Lottery(Long id, String ticket, int price, int amount) {
-        this.id = id;
-        this.ticket = ticket;
-        this.price = price;
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public Long getId() {
-        return id;
+    public Lottery(String ticket, int price, int amount) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
     }
 
     public String getTicket() {
@@ -51,5 +50,12 @@ public class Lottery {
 
     public void setTicket(String ticket) {
         this.ticket = ticket;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void prePersist() {
+        // Ensure that the price is always set to 1
+        this.amount = 1;
     }
 }

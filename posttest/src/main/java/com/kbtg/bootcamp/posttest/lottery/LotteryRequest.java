@@ -1,5 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import jakarta.validation.constraints.NotNull;
+
 public class LotteryRequest {
     private String ticket;
     private int price;

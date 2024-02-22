@@ -19,7 +19,7 @@ public class UserTicket {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "lottery_id")
+    @JoinColumn(name = "ticket")
     private Lottery lottery;
 
     @Column(name = "purchase_date")

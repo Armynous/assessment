@@ -15,7 +15,7 @@ public class UserService {
         this.userTicketRepository = userTicketRepository;
     }
 
-    public List<UserTicket> getAllTicketByUser(Integer userId) {
+    public List<UserTicket> getAllTicketByUser(String userId) {
         return userTicketRepository.findByUserId(userId);
     }
 }
