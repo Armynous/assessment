@@ -3,6 +3,9 @@ package com.kbtg.bootcamp.posttest.lottery;
 import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.AllLotteryResponse;
 import com.kbtg.bootcamp.posttest.configResponse.lotteryResponse.LotteryResponse;
 import com.kbtg.bootcamp.posttest.exception.DuplicateException;
+import com.kbtg.bootcamp.posttest.exception.NotFoundException;
+import jakarta.transaction.Transactional;
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +34,25 @@ public class LotteryService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public LotteryResponse createLottery(LotteryRequest request) throws Exception {
-        if (lotteryRepository.existsByTicket(request.getTicket())) {
-            throw new DuplicateException("Lottery number already exists");
+        String ticket = request.getTicket();
+
+        if (lotteryRepository.existsByTicket(ticket)) {
+            throw new DuplicateException("Lottery number already exists: " + ticket);
         }
 
         Lottery newLottery = new Lottery();
-        newLottery.setTicket(request.getTicket());
+        newLottery.setTicket(ticket);
         newLottery.setPrice(request.getPrice());
         newLottery.setAmount(request.getAmount());
 
-        lotteryRepository.save(newLottery);
-
-        return new LotteryResponse(newLottery.getTicket());
+        try {
+            lotteryRepository.save(newLottery);
+            return new LotteryResponse(newLottery.getTicket());
+        } catch (Exception e) {
+            throw new BadRequestException("Error creating lottery");
+        }
     }
+
+
+
 }

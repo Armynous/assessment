@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("SELECT u FROM User u WHERE u.id LIKE %:userId%")
+    @Query("SELECT u FROM User u WHERE u.id = :userId")
     Optional<User> findById(String userId);
 }

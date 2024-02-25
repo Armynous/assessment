@@ -3,12 +3,14 @@ package com.kbtg.bootcamp.posttest.userTicket;
 import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketDropResponse;
 import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketResponseId;
 import com.kbtg.bootcamp.posttest.configResponse.userTicketResponse.UserTicketSummaryResponse;
+import com.kbtg.bootcamp.posttest.exception.DeletionFailedException;
 import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.user.User;
 import com.kbtg.bootcamp.posttest.user.UserRepository;
 import com.kbtg.bootcamp.posttest.user.UserService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class UserTicketService {
         this.userService = userService;
     }
 
-    public UserTicketResponseId createLottery(String userId, String ticketId) {
+    public UserTicketResponseId buyLottery(String userId, String ticketId) {
 
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<Lottery> optionalTicket = lotteryRepository.findByTicket(ticketId);
@@ -47,7 +49,7 @@ public class UserTicketService {
 
             return new UserTicketResponseId(String.valueOf(userTicket.getUserLotteryId()));
         } else {
-            throw new NotFoundException("Ticket number already out");
+            throw new NotFoundException("Your user id must be a 10-digit");
         }
 
     }
@@ -55,12 +57,15 @@ public class UserTicketService {
     public ResponseEntity<UserTicketSummaryResponse> getLotterySummary(String userId) {
         List<UserTicket> userTickets = userService.getAllTicketByUser(userId);
 
+        if (userTickets.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         int totalCount = userTickets.size();
         int totalCost = userTickets.stream().mapToInt(ticket -> ticket.getLottery().getPrice()).sum();
 
         List<String> uniqueTickets = userTickets.stream()
                 .map(ticket -> ticket.getLottery().getTicket())
-//                .distinct()
                 .toList();
 
         UserTicketSummaryResponse summaryResponse = new UserTicketSummaryResponse(uniqueTickets, totalCount, totalCost);
@@ -72,10 +77,13 @@ public class UserTicketService {
 
         Optional<UserTicket> deleteTicket = userTicketRepository.findAllById(userId, ticketId);
 
-        userTicketRepository.dropLottery(userId, ticketId);
-
-        return deleteTicket.map(userTicket -> new UserTicketDropResponse(userTicket.getLottery().getTicket()))
-                .orElse(new UserTicketDropResponse("error"));
+        if (deleteTicket.isPresent()) {
+            userTicketRepository.dropLottery(userId, ticketId);
+            return new UserTicketDropResponse(deleteTicket.get().getLottery().getTicket());
+        } else {
+            throw new DeletionFailedException("Invalid your user id or ticket number");
+        }
 
     }
+
 }

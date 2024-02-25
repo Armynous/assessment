@@ -28,6 +28,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.CREATED);
     }
+
+    @ExceptionHandler(value = {DeletionFailedException.class})
+    public ResponseEntity<Object> handleDeletionFailedException(DeletionFailedException deletionFailedException) {
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
+                deletionFailedException.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+
+        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.CREATED);
+    }
 }
 
 

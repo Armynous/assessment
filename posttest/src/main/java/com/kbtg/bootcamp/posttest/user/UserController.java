@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
     public UserTicketResponseId createLottery(@PathVariable String userId, @PathVariable Integer ticketId) {
-        return userTicketService.createLottery(userId, String.valueOf(ticketId));
+        return userTicketService.buyLottery(userId, String.valueOf(ticketId));
     }
 
     @GetMapping("/{userId}/lotteries")

@@ -1,13 +1,16 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "user", schema = "public")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @Size(min = 10, max = 10, message = "User id must be a 10-digit string")
     @Column(name = "user_id")
     private String id;
     @Column(name = "username")
