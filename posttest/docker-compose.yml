@@ -23,6 +23,5 @@ services:
       - spring.datasource.username=user
       - spring.datasource.password=password
       - spring.jpa.hibernate.ddl-auto=update
-      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - postgres
